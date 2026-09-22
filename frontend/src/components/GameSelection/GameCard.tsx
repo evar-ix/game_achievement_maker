@@ -4,6 +4,7 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDemoSession } from "../../learning/demoSession";
 import type { GameSummary } from "../../types/game";
 import "./GameCard.css";
 
@@ -19,6 +20,7 @@ function GameCard({
   onSelect,
 }: GameCardProps) {
   const navigate = useNavigate();
+  const { role } = useDemoSession();
 
   const cardRef =
     useRef<HTMLElement | null>(null);
@@ -54,9 +56,11 @@ function GameCard({
       /^.*?[.!?](?:\s|$)/
     )?.[0]?.trim() ?? description;
 
-  const handleAnalyse = () => {
+  const handleOpenGame = () => {
     navigate(
-      `/games/${game.id}/monitoring`
+      role === "developer"
+        ? `/games/${game.id}/monitoring`
+        : `/games/${game.id}/learn`
     );
   };
 
@@ -232,9 +236,9 @@ function GameCard({
           <button
             type="button"
             className="analyse-button"
-            onClick={handleAnalyse}
+            onClick={handleOpenGame}
           >
-            Analyse
+            {role === "developer" ? "Open workspace" : "Play & unlock"}
           </button>
         </div>
       )}

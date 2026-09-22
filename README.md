@@ -12,6 +12,21 @@ Players run local screen monitoring to unlock those challenges while playing.
 - PostgreSQL with Prisma
 - OpenRouter for achievement-challenge generation
 
+## Features
+
+- Developer and Player views with role-aware navigation
+- Visual gameplay checkpoints captured from a browser or Electron desktop shell
+- Local perceptual fingerprinting for privacy-preserving screen matching
+- Persistent player achievement unlocks
+- AI-generated checkpoint challenges with an editable review screen
+- JSON export for completed achievement challenges
+
+## Repository layout
+
+- `frontend/` — React interface and Electron screen-capture bridge
+- `backend/` — NestJS API, Prisma data access, and OpenRouter integration
+- `docs/` — gameplay monitoring API, privacy notes, and prototype limitations
+
 ## Requirements
 
 - Node.js 20.19+, 22.13+, or 24+
@@ -99,9 +114,14 @@ privacy notes, and prototype limitations.
 
 ## Verification
 
+With PostgreSQL running and `backend/.env` configured:
+
 ```shell
 cd backend
+npx prisma validate
 npm test
+npm run test:e2e -- --runInBand
+npm run lint
 npm run build
 
 cd ../frontend

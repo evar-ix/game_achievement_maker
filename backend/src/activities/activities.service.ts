@@ -1,7 +1,6 @@
 import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common';
 import type {ClientActivityExportRequest, ClientTeachingActivityFile} from './client-json/client-activity-json.interface';
 import {mapTeachingActivitiesToClientJson} from './client-json/client-activity.mapper';
-import {ActivityGeneratorService} from './generation/activity-generator.service';
 import {PrismaService} from '../database/prisma.service';
 import {ActivityType, QuestionType} from '../generated/prisma/client';
 
