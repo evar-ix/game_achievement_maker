@@ -1,0 +1,222 @@
+/* Colour palette */
+
+body:has(.game-selection-page) {
+  --selection-bg: #0b1118;
+
+  --selection-surface: rgba(27, 42, 57, 0.78);
+  --selection-surface-hover: rgba(34, 52, 70, 0.86);
+  --selection-surface-selected: rgba(31, 53, 78, 0.88);
+
+  --selection-border: rgba(120, 151, 181, 0.22);
+  --selection-border-hover: rgba(130, 165, 200, 0.38);
+
+  --selection-text: #cbd5df;
+  --selection-heading: #f5f7fa;
+  --selection-muted: #93a2b2;
+
+  --selection-accent: #176bff;
+  --selection-accent-hover: #2f7bff;
+  --selection-accent-soft: rgba(23, 107, 255, 0.14);
+  --selection-accent-border: rgba(23, 107, 255, 0.60);
+
+  background: #0b1118;
+}
+
+body:has(.game-selection-page) #root {
+  background: #0b1118;
+}
+
+/* GAME SELECTION PAGE */
+
+.game-selection-page {
+
+  /* Layout */
+
+  box-sizing: border-box;
+
+  width: 100%;
+  max-width: 1200px;
+
+  min-height: calc(100vh - 68px);
+
+  margin: 0 auto;
+
+  padding: 32px;
+
+  color: var(--selection-text);
+
+  background-color: var(--selection-bg);
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.04'/%3E%3C/svg%3E");
+
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  background-blend-mode: soft-light;
+
+  text-align: left;
+}
+
+
+/* PAGE HEADER */
+
+.game-selection-header {
+  margin-bottom: 28px;
+
+  padding-bottom: 22px;
+
+  border-bottom:
+    1px solid var(--selection-border);
+}
+
+
+.game-selection-header h1 {
+  margin: 0 0 10px;
+
+  color: var(--selection-heading);
+
+  font-size: 38px;
+  line-height: 1.1;
+  font-weight: 650;
+
+  letter-spacing: -0.4px;
+
+  text-align: left;
+}
+
+
+.game-selection-header p {
+  margin: 0;
+
+  color: var(--selection-muted);
+
+  font-size: 16px;
+  line-height: 1.5;
+
+  text-align: left;
+}
+
+
+/* GAME GRID */
+
+.game-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 20px;
+
+  align-items: start;
+}
+
+
+/* TOP BAR */
+
+body:has(.game-selection-page) .demo-header {
+  background: #111b26;
+
+  border-bottom:
+    1px solid var(--selection-border);
+
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.20);
+}
+
+body:has(.game-selection-page) .demo-brand {
+  color: var(--selection-heading);
+}
+
+body:has(.game-selection-page) .demo-nav a,
+body:has(.game-selection-page) .demo-session-controls label {
+  color: var(--selection-muted);
+}
+
+body:has(.game-selection-page) .demo-nav a:hover {
+  color: var(--selection-heading);
+}
+
+
+/* DEVELOPER DROPDOWN */
+
+body:has(.game-selection-page)
+.demo-session-controls select {
+  color: var(--selection-heading);
+
+  background: var(--selection-surface);
+
+  border:
+    1px solid var(--selection-border);
+
+  border-radius: 6px;
+
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+body:has(.game-selection-page)
+.demo-session-controls select:hover {
+  background: var(--selection-surface-hover);
+
+  border-color:
+    var(--selection-border-hover);
+}
+
+body:has(.game-selection-page)
+.demo-session-controls select:focus {
+  border-color:
+    var(--selection-accent);
+
+  outline: none;
+
+  box-shadow:
+    0 0 0 2px
+    var(--selection-accent-soft);
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+
+  .game-list {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .game-selection-page {
+    padding:
+      24px 16px 40px;
+  }
+
+
+  .game-selection-header {
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+  }
+
+
+  .game-selection-header h1 {
+    font-size: 32px;
+  }
+
+
+  .game-selection-header p {
+    font-size: 15px;
+  }
+
+
+  .game-list {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+}

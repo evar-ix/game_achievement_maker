@@ -1,0 +1,1 @@
+export type { Achievement } from '../common/models/game.model';

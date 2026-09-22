@@ -1,0 +1,136 @@
+.analysis-card {
+  width: 100%;
+  max-width: 560px;
+  margin: 40px auto;
+  padding: 28px;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.analysis-card h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+.analysis-status {
+  padding: 22px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.analysis-status h3 {
+  margin-top: 12px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.analysis-status p {
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.status-label {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background-color: var(--accent-bg);
+}
+
+.primary-button,
+.secondary-button,
+.refresh-button {
+  padding: 10px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.primary-button {
+  border: none;
+  background-color: var(--accent-strong);
+  color: white;
+}
+
+.primary-button:hover {
+  opacity: 0.85;
+}
+
+.analysis-option-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.analysis-option-buttons .primary-button {
+  width: 100%;
+}
+
+.primary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  color: var(--text-h);
+  border: 1px solid var(--border);
+  background-color: var(--surface-raised);
+}
+
+.manual-analysis-button:disabled {
+  background-color: var(--accent-strong);
+  color: white;
+  opacity: 1;
+  cursor: default;
+}
+
+.manual-analysis-button:disabled:hover {
+  opacity: 0.85;
+}
+
+.refresh-button {
+  margin-top: 16px;
+  color: var(--text-h);
+  border: 1px solid var(--border);
+  background-color: var(--surface-raised);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.required {
+  border-left: 4px solid;
+}
+
+.existing {
+  border-left: 4px solid;
+}
+
+.processing {
+  border-left: 4px solid;
+}
+
+.completed {
+  border-left: 4px solid;
+}
+
+.failed {
+  border-left: 4px solid;
+}
+
+.limited {
+  border-left: 4px solid;
+}

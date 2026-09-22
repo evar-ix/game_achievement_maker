@@ -1,0 +1,202 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum GameIntegrationType {
+  SDK
+  DRM_FREE
+}
+
+enum TriggerType {
+  SDK_ACHIEVEMENT
+  VISUAL_CHECKPOINT
+}
+
+enum AnalysisSource {
+  SDK
+  DRM_FREE
+  COMBINED
+}
+
+enum AnalysisStatus {
+  PENDING
+  PROCESSING
+  COMPLETE
+  FAILED
+}
+
+enum ActivityType {
+  QUIZ
+  SHORT_ANSWER
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  SHORT_ANSWER
+}
+
+model Game {
+  id              String              @id @default(uuid()) @db.Uuid
+  externalId      String?
+  title           String
+  description     String?
+  integrationType GameIntegrationType
+
+  executablePath String?
+  coverImageUrl  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  achievements Achievement[]
+  checkpoints  GameplayCheckpoint[]
+  triggers     GameplayTrigger[]
+  analyses     GameAnalysis[]
+  activities   TeachingActivity[]
+
+  @@index([integrationType])
+}
+
+model Achievement {
+  id                    String @id @default(uuid()) @db.Uuid
+  gameId                String @db.Uuid
+  externalAchievementId String
+
+  name                  String
+  description           String?
+  additionalDescription String?
+
+  game    Game             @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  trigger GameplayTrigger?
+
+  @@unique([gameId, externalAchievementId])
+}
+
+model GameplayCheckpoint {
+  id     String @id @default(uuid()) @db.Uuid
+  gameId String @db.Uuid
+
+  title       String
+  description String?
+
+  snapshotReference String?
+  visualFingerprint String?
+  matchThreshold    Int     @default(12)
+  isActive          Boolean @default(true)
+  timestampSeconds  Int?
+  developerNote    String?
+
+  createdAt DateTime @default(now())
+
+  game    Game                      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  trigger GameplayTrigger?
+  unlocks PlayerCheckpointUnlock[]
+}
+
+model PlayerCheckpointUnlock {
+  id           String @id @default(uuid()) @db.Uuid
+  playerId    String
+  checkpointId String @db.Uuid
+
+  similarityScore       Float
+  screenshotFingerprint String
+  unlockedAt            DateTime @default(now())
+
+  checkpoint GameplayCheckpoint @relation(fields: [checkpointId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, checkpointId])
+  @@index([playerId])
+}
+
+model GameplayTrigger {
+  id     String @id @default(uuid()) @db.Uuid
+  gameId String @db.Uuid
+
+  type        TriggerType
+  description String
+
+  achievementId String? @unique @db.Uuid
+  checkpointId  String? @unique @db.Uuid
+
+  game        Game                @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  achievement Achievement?        @relation(fields: [achievementId], references: [id], onDelete: SetNull)
+  checkpoint  GameplayCheckpoint? @relation(fields: [checkpointId], references: [id], onDelete: SetNull)
+
+  activities TeachingActivity[]
+}
+
+model GameAnalysis {
+  id     String @id @default(uuid()) @db.Uuid
+  gameId String @db.Uuid
+
+  status AnalysisStatus @default(PENDING)
+  source AnalysisSource
+
+  summary String?
+
+  themes           String[] @default([])
+  gameplayElements Json?
+
+  provider  String?
+  rawOutput Json?
+
+  analysedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([gameId])
+}
+
+model TeachingActivity {
+  id     String @id @default(uuid()) @db.Uuid
+  gameId String @db.Uuid
+
+  triggerId String? @db.Uuid
+
+  unitId              String?
+  createdBy           String?
+  sourceLibraryItemId String?
+
+  title             String
+  description       String
+  learningObjective String?
+
+  type     ActivityType
+  isActive Boolean      @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  game    Game             @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  trigger GameplayTrigger? @relation(fields: [triggerId], references: [id], onDelete: SetNull)
+
+  questions ActivityQuestion[]
+
+  @@index([gameId])
+}
+
+model ActivityQuestion {
+  id         String @id @default(uuid()) @db.Uuid
+  activityId String @db.Uuid
+
+  position Int
+  type     QuestionType
+
+  question String
+
+  options        String[] @default([])
+  correctAnswers String[] @default([])
+
+  activity TeachingActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@unique([activityId, position])
+}
